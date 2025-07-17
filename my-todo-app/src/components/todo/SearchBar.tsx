@@ -3,7 +3,7 @@
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Search, XCircle } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface SearchBarProps {
   onSearch: (query: string) => void;
@@ -12,6 +12,10 @@ interface SearchBarProps {
 
 export default function SearchBar({ onSearch, currentQuery }: SearchBarProps) {
   const [searchQuery, setSearchQuery] = useState(currentQuery);
+
+  useEffect(() => {
+    setSearchQuery(currentQuery);
+  }, [currentQuery]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
@@ -33,6 +37,7 @@ export default function SearchBar({ onSearch, currentQuery }: SearchBarProps) {
         value={searchQuery}
         onChange={handleSearchChange}
         className="pl-9 pr-9"
+        aria-label="搜尋待辦事項"
       />
       {searchQuery && (
         <Button

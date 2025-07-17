@@ -145,9 +145,13 @@ export function TodoProvider({ children }: { children: ReactNode }) {
     try {
       const savedState = localStorage.getItem(STORAGE_KEY);
       if (savedState) {
+        interface SerializedTodo extends Omit<Todo, 'createdAt'> {
+  createdAt: string;
+}
+
         const parsedState = JSON.parse(savedState);
         // 恢復日期物件
-        const todos = parsedState.todos.map((todo: Omit<Todo, 'createdAt'> & { createdAt: string }) => ({
+        const todos = parsedState.todos.map((todo: SerializedTodo) => ({
           ...todo,
           createdAt: new Date(todo.createdAt)
         }));

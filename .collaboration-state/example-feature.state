@@ -1,0 +1,7 @@
+{
+    "feature": "example-feature",
+    "current_step": "claude_work",
+    "status": "in_progress",
+    "timestamp": "2025-01-17 10:30:00",
+    "additional_data": "這是一個範例功能的描述"
+}

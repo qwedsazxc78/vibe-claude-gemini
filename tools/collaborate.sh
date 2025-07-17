@@ -184,7 +184,7 @@ gemini_work() {
     echo "$gemini_prompt" >> logs/collaboration.log
     echo "---" >> logs/collaboration.log
 
-    if gemini "$gemini_prompt"; then
+    if gemini --model gemini-2.5-flash -p "$gemini_prompt"; then
         echo "[$timestamp] Gemini CLI 完成: $feature" >> logs/collaboration.log
         log_success "Gemini CLI 優化完成 ✅"
         return 0
@@ -233,7 +233,7 @@ cross_review() {
 
 請將回應寫入 reviews/${feature}-gemini-response.md 檔案。"
 
-    if gemini "$gemini_response_prompt"; then
+    if gemini --model gemini-2.5-flash -p "$gemini_response_prompt"; then
         log_success "Gemini 回應完成 ✓"
     else
         log_warning "Gemini 回應失敗"

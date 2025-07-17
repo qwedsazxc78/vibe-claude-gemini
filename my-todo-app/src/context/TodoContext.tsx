@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useReducer, useEffect, ReactNode } from 'react';
+import React, { createContext, useReducer, useEffect, ReactNode, useCallback } from 'react';
 import { Todo, FilterType } from '@/types/todo';
 
 /**
@@ -12,6 +12,8 @@ interface TodoState {
   todos: Todo[];
   /** 當前篩選類型 */
   filter: FilterType;
+  /** 當前搜尋文字 */
+  searchQuery: string;
 }
 
 /**
@@ -23,6 +25,7 @@ type TodoAction =
   | { type: 'TOGGLE_TODO'; payload: string }
   | { type: 'DELETE_TODO'; payload: string }
   | { type: 'SET_FILTER'; payload: FilterType }
+  | { type: 'SET_SEARCH_QUERY'; payload: string }
   | { type: 'LOAD_TODOS'; payload: Todo[] };
 
 /**
@@ -40,6 +43,8 @@ interface TodoContextType {
   deleteTodo: (id: string) => void;
   /** 設定篩選類型 */
   setFilter: (filter: FilterType) => void;
+  /** 設定搜尋文字 */
+  setSearchQuery: (query: string) => void;
   /** 取得篩選後的Todo列表 */
   getFilteredTodos: () => Todo[];
 }
@@ -54,7 +59,8 @@ export const TodoContext = createContext<TodoContextType | null>(null);
  */
 const initialState: TodoState = {
   todos: [],
-  filter: 'all'
+  filter: 'all',
+  searchQuery: ''
 };
 
 /**
@@ -106,6 +112,13 @@ function todoReducer(state: TodoState, action: TodoAction): TodoState {
       };
     }
 
+    case 'SET_SEARCH_QUERY': {
+      return {
+        ...state,
+        searchQuery: action.payload
+      };
+    }
+
     case 'LOAD_TODOS': {
       return {
         ...state,
@@ -142,6 +155,9 @@ export function TodoProvider({ children }: { children: ReactNode }) {
         if (parsedState.filter) {
           dispatch({ type: 'SET_FILTER', payload: parsedState.filter });
         }
+        if (parsedState.searchQuery) {
+          dispatch({ type: 'SET_SEARCH_QUERY', payload: parsedState.searchQuery });
+        }
       }
     } catch (error) {
       console.error('載入Todo資料失敗:', error);
@@ -155,7 +171,8 @@ export function TodoProvider({ children }: { children: ReactNode }) {
     try {
       const dataToSave = {
         todos: state.todos,
-        filter: state.filter
+        filter: state.filter,
+        searchQuery: state.searchQuery
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToSave));
     } catch (error) {
@@ -211,20 +228,43 @@ export function TodoProvider({ children }: { children: ReactNode }) {
   };
 
   /**
+   * 設定搜尋文字
+   * @param query 搜尋文字
+   */
+  const setSearchQuery = (query: string) => {
+    dispatch({ type: 'SET_SEARCH_QUERY', payload: query });
+  };
+
+  /**
    * 取得篩選後的Todo列表
    * @returns 根據當前篩選條件過濾的Todo陣列
    */
-  const getFilteredTodos = (): Todo[] => {
+  const getFilteredTodos = useCallback((): Todo[] => {
+    let filtered = state.todos;
+
+    // Apply filter
     switch (state.filter) {
       case 'active':
-        return state.todos.filter(todo => !todo.completed);
+        filtered = filtered.filter(todo => !todo.completed);
+        break;
       case 'completed':
-        return state.todos.filter(todo => todo.completed);
+        filtered = filtered.filter(todo => todo.completed);
+        break;
       case 'all':
       default:
-        return state.todos;
+        break;
     }
-  };
+
+    // Apply search query
+    if (state.searchQuery) {
+      const lowerCaseQuery = state.searchQuery.toLowerCase();
+      filtered = filtered.filter(todo =>
+        todo.text.toLowerCase().includes(lowerCaseQuery)
+      );
+    }
+
+    return filtered;
+  }, [state.filter, state.todos, state.searchQuery]);
 
   const value: TodoContextType = {
     state,
@@ -232,6 +272,7 @@ export function TodoProvider({ children }: { children: ReactNode }) {
     toggleTodo,
     deleteTodo,
     setFilter,
+    setSearchQuery,
     getFilteredTodos
   };
 

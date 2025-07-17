@@ -2,6 +2,7 @@
 
 import { useTodos } from '@/hooks/useTodos';
 import TodoItem from './TodoItem';
+import { AnimatePresence, motion } from 'framer-motion';
 
 /**
  * TodoList 組件
@@ -27,17 +28,24 @@ export default function TodoList() {
 
   if (filteredTodos.length === 0) {
     return (
-      <div className="text-center py-12 text-muted-foreground">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+        className="text-center py-12 text-muted-foreground"
+      >
         <p>{getEmptyMessage()}</p>
-      </div>
+      </motion.div>
     );
   }
 
   return (
     <div className="space-y-2">
-      {filteredTodos.map((todo) => (
-        <TodoItem key={todo.id} todo={todo} />
-      ))}
+      <AnimatePresence>
+        {filteredTodos.map((todo) => (
+          <TodoItem key={todo.id} todo={todo} />
+        ))}
+      </AnimatePresence>
     </div>
   );
 }

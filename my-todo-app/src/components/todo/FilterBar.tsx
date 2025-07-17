@@ -31,7 +31,7 @@ export default function FilterBar() {
   ];
 
   return (
-    <div className="flex gap-2 justify-center">
+    <div className="flex flex-wrap gap-2 justify-center">
       {filterButtons.map(({ value, label }) => (
         <Button
           key={value}
@@ -41,7 +41,7 @@ export default function FilterBar() {
           className="relative"
         >
           {label}
-          <span className="ml-2 text-xs">
+          <span className="ml-2 text-xs font-bold transition-all duration-300 ease-in-out">
             ({counts[value]})
           </span>
         </Button>

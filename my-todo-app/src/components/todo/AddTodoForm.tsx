@@ -57,6 +57,7 @@ export default function AddTodoForm() {
         placeholder="新增待辦事項..."
         className="flex-1"
         aria-label="新增待辦事項"
+        data-testid="add-todo-input"
       />
       <Button 
         type="submit" 

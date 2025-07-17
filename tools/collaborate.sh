@@ -480,7 +480,7 @@ generate_report() {
 
     log_step "生成協作報告..."
 
-    cat > "reports/collaboration-report-$(date +%Y%m%d-%H%M%S).md" << EOF
+    cat > "reports/collaboration-report-$feature-$(date +%Y%m%d-%H%M%S).md" << EOF
 # 協作開發報告
 
 ## 功能信息

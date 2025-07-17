@@ -83,12 +83,12 @@ function TodoAppContent() {
           <div className="absolute top-0 right-0 flex items-center gap-2">
             <button
               onClick={keyboard.toggleHelp}
-              className="p-2 text-muted-foreground hover:text-foreground transition-colors rounded-md hover:bg-muted"
+              className="flex items-center gap-2 px-3 py-2 text-muted-foreground hover:text-foreground transition-colors rounded-md hover:bg-muted border border-border"
               title="顯示鍵盤快捷鍵 (Shift + ?)"
               aria-label="顯示鍵盤快捷鍵"
             >
               <svg
-                className="w-5 h-5"
+                className="w-4 h-4"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -100,6 +100,10 @@ function TodoAppContent() {
                   d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
+              <span className="text-sm">快捷鍵</span>
+              <kbd className="hidden sm:inline-flex px-1.5 py-0.5 text-xs font-mono bg-background border border-border rounded">
+                Shift + ?
+              </kbd>
             </button>
             <ThemeToggle />
           </div>
@@ -109,6 +113,15 @@ function TodoAppContent() {
           <p className="mt-2 text-muted-foreground">
             簡單高效的待辦事項管理
           </p>
+          <div className="mt-4 text-sm text-muted-foreground">
+            <span className="inline-flex items-center gap-1">
+              💡 提示：按 
+              <kbd className="px-1.5 py-0.5 text-xs font-mono bg-muted border border-border rounded">
+                Shift + ?
+              </kbd>
+              查看所有快捷鍵
+            </span>
+          </div>
         </header>
 
         {/* 主要內容區域 */}

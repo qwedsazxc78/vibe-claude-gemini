@@ -127,9 +127,33 @@ export const KeyboardHelp = memo<KeyboardHelpProps>(({
 
         {/* 底部說明 */}
         <div className="p-6 border-t bg-muted/30">
-          <p className="text-sm text-muted-foreground">
-            在輸入欄位中時，快捷鍵會被暫時停用。按 <kbd className="px-1 py-0.5 text-xs bg-background border rounded">Shift + ?</kbd> 可再次顯示此幫助。
-          </p>
+          <div className="space-y-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                <span className="text-muted-foreground">
+                  在輸入欄位中時，快捷鍵會被暫時停用
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                <span className="text-muted-foreground">
+                  按 <kbd className="px-1 py-0.5 text-xs bg-background border rounded">Shift + ?</kbd> 可再次顯示此幫助
+                </span>
+              </div>
+            </div>
+            <div className="text-xs text-muted-foreground border-t pt-3">
+              <p className="mb-2">
+                <strong>使用提示：</strong>
+              </p>
+              <ul className="space-y-1 list-disc list-inside">
+                <li>快捷鍵在頁面載入後立即可用</li>
+                <li>在輸入框中時，請使用滑鼠或觸控操作</li>
+                <li>按 <kbd className="px-1 py-0.5 bg-background border rounded">Esc</kbd> 可以退出大部分輸入框</li>
+                <li>所有快捷鍵都支援鍵盤導航和螢幕閱讀器</li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </div>

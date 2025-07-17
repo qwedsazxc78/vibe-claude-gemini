@@ -141,7 +141,7 @@ $description
     echo "$claude_prompt" >> logs/collaboration.log
     echo "---" >> logs/collaboration.log
 
-    if claude "$claude_prompt"; then
+    if claude -p "$claude_prompt" -v ; then
         echo "[$timestamp] Claude Code 完成: $feature" >> logs/collaboration.log
         log_success "Claude Code 工作完成 ✅"
         return 0
@@ -216,7 +216,7 @@ cross_review() {
 
 請將審查結果寫入 reviews/${feature}-claude-review.md 檔案。"
 
-    if claude "$claude_review_prompt"; then
+    if claude -p "$claude_review_prompt" -v; then
         log_success "Claude 審查完成 ✓"
     else
         log_warning "Claude 審查失敗"
@@ -245,17 +245,18 @@ cross_review() {
 # 測試階段
 run_tests() {
     local feature=$1
+    local project_dir=$2
     local timestamp=$(date '+%Y-%m-%d %H:%M:%S')
 
     log_step "執行測試..."
-    echo "[$timestamp] 開始測試: $feature" >> logs/collaboration.log
+    echo "[$timestamp] 開始測試: $feature (專案目錄: $project_dir)" >> logs/collaboration.log
 
     local test_failed=false
 
     # TypeScript 檢查
     if command -v tsc &> /dev/null; then
         log_info "執行 TypeScript 檢查..."
-        if ! pnpm run build 2>/dev/null; then
+        if ! (cd "$project_dir" && pnpm run build) 2>/dev/null; then
             log_warning "TypeScript 建置失敗"
             test_failed=true
         else
@@ -264,9 +265,9 @@ run_tests() {
     fi
 
     # ESLint 檢查
-    if [ -f ".eslintrc.json" ] || [ -f "eslint.config.js" ]; then
+    if [ -f "$project_dir/.eslintrc.json" ] || [ -f "$project_dir/eslint.config.js" ]; then
         log_info "執行 ESLint 檢查..."
-        if ! pnpm run lint 2>/dev/null; then
+        if ! (cd "$project_dir" && pnpm run lint) 2>/dev/null; then
             log_warning "ESLint 檢查失敗"
             test_failed=true
         else
@@ -275,9 +276,9 @@ run_tests() {
     fi
 
     # 執行測試
-    if [ -f "jest.config.js" ] || [ -f "jest.config.ts" ]; then
+    if [ -f "$project_dir/jest.config.js" ] || [ -f "$project_dir/jest.config.ts" ]; then
         log_info "執行單元測試..."
-        if ! pnpm test 2>/dev/null; then
+        if ! (cd "$project_dir" && pnpm test) 2>/dev/null; then
             log_warning "單元測試失敗"
             test_failed=true
         else
@@ -372,12 +373,12 @@ show_usage() {
     echo "Claude + Gemini 協作開發工具"
     echo
     echo "使用方法:"
-    echo "  $0 <功能名稱> [描述]"
+    echo "  $0 <功能名稱> [描述] [專案目錄]"
     echo
     echo "範例:"
-    echo "  $0 \"深色模式\" \"為應用程式添加深色模式切換功能\""
-    echo "  $0 \"搜尋功能\" \"實作即時搜尋和篩選\""
-    echo "  $0 \"用戶認證\""
+    echo "  $0 \"深色模式\" \"為應用程式添加深色模式切換功能\" \"my-todo-app\""
+    echo "  $0 \"搜尋功能\" \"實作即時搜尋和篩選\" \"frontend\""
+    echo "  $0 \"用戶認證\" \"\" \"backend\""
     echo
     echo "選項:"
     echo "  -h, --help     顯示此說明"
@@ -389,11 +390,17 @@ show_usage() {
 collaborate() {
     local feature=$1
     local description=$2
+    local project_dir=${3:-"my-todo-app"}
     local start_time=$(date '+%Y-%m-%d %H:%M:%S')
 
     if [ -z "$feature" ]; then
         log_error "請提供功能名稱"
         show_usage
+        exit 1
+    fi
+
+    if [ ! -d "$project_dir" ]; then
+        log_error "專案目錄不存在: $project_dir"
         exit 1
     fi
 
@@ -417,7 +424,7 @@ collaborate() {
         if gemini_work "$feature"; then
             cross_review "$feature"
 
-            if run_tests "$feature"; then
+            if run_tests "$feature" "$project_dir"; then
                 git_commit "$feature"
                 generate_report "$feature" "$start_time"
 

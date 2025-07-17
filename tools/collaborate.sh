@@ -249,15 +249,7 @@ claude_work() {
 
 $description
 
-請遵循以下指導原則：
-1. 閱讀專案中的 CLAUDE.md 文件（如果存在）
-2. 使用 TypeScript 嚴格類型定義
-3. 遵循 React 和 Next.js 最佳實踐
-4. 包含完整的錯誤處理
-5. 添加清楚的程式碼註釋
-6. 確保程式碼品質和可維護性
-
-完成後請提供實作摘要。"
+請遵循 @CLAUDE.md 指導原則並提供簡潔的實作摘要。"
 
     echo "Claude 提示:" >> logs/collaboration.log
     echo "$claude_prompt" >> logs/collaboration.log
@@ -297,15 +289,7 @@ gemini_work() {
     # 執行 Gemini CLI
     local gemini_prompt="審查和優化 $feature 功能。
 
-請遵循以下指導原則：
-1. 閱讀專案中的 GEMINI.md 文件（如果存在）
-2. 重點改善使用者體驗和介面設計
-3. 確保響應式設計和可訪問性
-4. 優化效能和載入速度
-5. 改善視覺設計和互動效果
-6. 提供使用者友好的錯誤處理
-
-請直接實作改進，並將審查結果寫入 reviews/${feature}-review.md 檔案。"
+請遵循 @GEMINI.md 指導原則，直接實作改進，並將審查結果寫入 reviews/${feature}-review.md。"
 
     echo "Gemini 提示:" >> logs/collaboration.log
     echo "$gemini_prompt" >> logs/collaboration.log
@@ -337,16 +321,7 @@ cross_review() {
 
     # Claude 審查 Gemini 的工作
     log_ai "Claude Code 審查 Gemini CLI 的改進..."
-    local claude_review_prompt="請審查 Gemini CLI 對 $feature 功能所做的改進。
-
-重點檢查：
-1. 程式碼邏輯是否正確
-2. TypeScript 類型安全性
-3. React 最佳實踐是否遵循
-4. 效能是否受到影響
-5. 可維護性評估
-
-請將審查結果寫入 reviews/${feature}-claude-review.md 檔案。"
+    local claude_review_prompt="審查 Gemini CLI 對 $feature 的改進。檢查程式碼邏輯、TypeScript 類型安全性、React 最佳實踐、效能影響和可維護性。將結果寫入 reviews/${feature}-claude-review.md。"
 
     if claude --model sonnet --permission-mode acceptEdits --verbose --output-format stream-json -p "$claude_review_prompt"; then
         log_success "Claude 審查完成 ✓"
@@ -356,14 +331,7 @@ cross_review() {
 
     # Gemini 回應審查
     log_ai "Gemini CLI 回應審查意見..."
-    local gemini_response_prompt="請閱讀 reviews/${feature}-claude-review.md 檔案並回應：
-
-1. 解釋設計決策的原因
-2. 修正任何被指出的問題
-3. 提供替代解決方案（如果需要）
-4. 改進相關實作
-
-請將回應寫入 reviews/${feature}-gemini-response.md 檔案。"
+    local gemini_response_prompt="閱讀 reviews/${feature}-claude-review.md 並回應：解釋設計決策、修正問題、提供替代方案、改進實作。將回應寫入 reviews/${feature}-gemini-response.md。"
 
     if gemini --model gemini-2.5-flash -p "$gemini_response_prompt"; then
         log_success "Gemini 回應完成 ✓"

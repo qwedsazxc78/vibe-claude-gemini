@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, forwardRef } from 'react';
 import { useTodos } from '@/hooks/useTodos';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -10,7 +10,7 @@ import { Plus } from 'lucide-react';
  * AddTodoForm 組件
  * 提供新增Todo項目的表單介面
  */
-export default function AddTodoForm() {
+const AddTodoForm = forwardRef<HTMLInputElement>((props, ref) => {
   const [text, setText] = useState('');
   const { addTodo } = useTodos();
 
@@ -50,6 +50,7 @@ export default function AddTodoForm() {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2">
       <Input
+        ref={ref}
         type="text"
         value={text}
         onChange={(e) => setText(e.target.value)}
@@ -69,4 +70,8 @@ export default function AddTodoForm() {
       </Button>
     </form>
   );
-}
+});
+
+AddTodoForm.displayName = 'AddTodoForm';
+
+export default AddTodoForm;

@@ -3,14 +3,14 @@
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Search, XCircle } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, forwardRef } from 'react';
 
 interface SearchBarProps {
   onSearch: (query: string) => void;
   currentQuery: string;
 }
 
-export default function SearchBar({ onSearch, currentQuery }: SearchBarProps) {
+const SearchBar = forwardRef<HTMLInputElement, SearchBarProps>(({ onSearch, currentQuery }, ref) => {
   const [searchQuery, setSearchQuery] = useState(currentQuery);
 
   useEffect(() => {
@@ -32,6 +32,7 @@ export default function SearchBar({ onSearch, currentQuery }: SearchBarProps) {
     <div className="relative flex items-center">
       <Search className="absolute left-3 h-4 w-4 text-muted-foreground" />
       <Input
+        ref={ref}
         type="text"
         placeholder="搜尋待辦事項..."
         value={searchQuery}
@@ -51,4 +52,8 @@ export default function SearchBar({ onSearch, currentQuery }: SearchBarProps) {
       )}
     </div>
   );
-}
+});
+
+SearchBar.displayName = 'SearchBar';
+
+export default SearchBar;

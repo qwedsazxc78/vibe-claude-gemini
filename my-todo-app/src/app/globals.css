@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f8f9fa; /* Light background */
+  --foreground: #212529; /* Dark text */
+  --card: #ffffff;
+  --card-foreground: #212529;
+  --popover: #ffffff;
+  --popover-foreground: #212529;
+  --primary: #007bff; /* Blue primary */
+  --primary-foreground: #ffffff;
+  --secondary: #e9ecef; /* Light gray secondary */
+  --secondary-foreground: #212529;
+  --muted: #dee2e6; /* Muted gray */
+  --muted-foreground: #6c757d; /* Muted text */
+  --accent: #e9ecef;
+  --accent-foreground: #212529;
+  --destructive: #dc3545; /* Red destructive */
+  --destructive-foreground: #ffffff;
+  --border: #ced4da; /* Light border */
+  --input: #ced4da;
+  --ring: #007bff;
+  --radius: 0.5rem;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --radius: var(--radius);
+}
+
+/* 深色模式 CSS 類別 - 手動切換用 */
+.dark {
+  --background: #212529; /* 深色背景 */
+  --foreground: #f8f9fa; /* 淺色文字 */
+  --card: #343a40;
+  --card-foreground: #f8f9fa;
+  --popover: #343a40;
+  --popover-foreground: #f8f9fa;
+  --primary: #007bff; /* 藍色主要色 */
+  --primary-foreground: #ffffff;
+  --secondary: #343a40; /* 深灰色次要色 */
+  --secondary-foreground: #f8f9fa;
+  --muted: #495057; /* 靜音深灰色 */
+  --muted-foreground: #adb5bd; /* 靜音淺色文字 */
+  --accent: #343a40;
+  --accent-foreground: #f8f9fa;
+  --destructive: #dc3545;
+  --destructive-foreground: #ffffff;
+  --border: #495057;
+  --input: #495057;
+  --ring: #007bff;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}

@@ -9,25 +9,35 @@
 ### 🖼️ 專案階段展示
 
 #### Part 1: 環境建置階段
-![Web App Interface](docs/P1-1%20Web.png)
+
+![Web App Interface](docs/P1-1-Web.png)
+
 *初始化 Next.js 應用程式界面*
 
-![Claude Code Setup](docs/P1-2%20Claude.png)
+![Claude Code Setup](docs/P1-2-Claude.png)
+
 *Claude Code 環境配置完成*
 
-![Gemini CLI Setup](docs/P1-3%20Gemini.png)
+![Gemini CLI Setup](docs/P1-3-Gemini.png)
+
 *Gemini CLI 工具準備就緒*
 
 #### Part 2: Claude Code 核心實作
+
 ![Core Logic Implementation](docs/P2.png)
+
 *Claude Code 完成核心邏輯和 TypeScript 架構*
 
 #### Part 3: Gemini CLI 美化優化
+
 ![UI Enhancement](docs/P3.png)
+
 *Gemini CLI 完成介面美化和使用者體驗優化*
 
 #### Part 4: AI 協作整合
+
 ![AI Collaboration](docs/P4.png)
+
 *完整的 AI 協作開發流程展示*
 
 ### ✨ 主要特色
